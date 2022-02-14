@@ -2,6 +2,5 @@
 
 int main(int argc, char const *argv[])
 {
-    void start();
-    return 0;
+    return EXIT_SUCCESS;
 }
