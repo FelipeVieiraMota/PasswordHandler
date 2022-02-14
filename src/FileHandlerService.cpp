@@ -167,7 +167,7 @@ void FileHandler::openFile(void){
   	if(!file.is_open())
   		cout<<"File corrupted.";
   	else
-  		system("cat Password.txt");
+  		system("cat Passwords.txt");
   	file.close();
 }
 
