@@ -1,5 +1,10 @@
 /**
+ * 
  * Linux Version 1.0 
+ * 
+ * I created this wrench to help to deal with my passwords.
+ * I have several of passwords and I need to organize and access quickly them
+ * 
  */
 
 #include <iostream>
@@ -12,9 +17,10 @@
 #include <stdio_ext.h>
 #include "FileHandler.h"
 #include <string.h>
+#include <cstring>
 using namespace std;
 
-const string FILE_NAME = "Passwords.txt";
+const string FILE_NAME = "/home/felipe/Passwords/PasswordManagerFiles/Passwords.txt";
 const int MAX_SIZE = 255;
 
 bool FileHandler::searchPatterns(void){
@@ -25,7 +31,7 @@ bool FileHandler::searchPatterns(void){
     char wordToSearch[MAX_SIZE];
     bool found = false;
 	cout<<"--------------------------------------------------"<<endl;	
-	cout<<"TYPE WORD"<<endl;
+	cout<<"Search in Title"<<endl;
 	cout<<"--------------------------------------------------"<<endl;
 	cin.getline(wordToSearch,MAX_SIZE);
 	cout<<"--------------------------------------------------"<<endl;
@@ -41,9 +47,18 @@ bool FileHandler::searchPatterns(void){
 		cout<<"--------------------------------------------------"<<endl;
         while(!file.eof()){
             getline(file,currentLine);
-            if (currentLine != "########################################"){
-                string titleConcat = byTitle + wordToSearch;
-                if(currentLine.find(titleConcat) != string::npos ){
+            if (currentLine != "" && 
+                currentLine != "########################################" &&
+                currentLine.find("Title: ") != string::npos
+            ){
+
+                string lowerCase = wordToSearch;
+                lowerCase[0] = tolower(lowerCase[0]);
+
+                string uppercase = wordToSearch;
+                uppercase[0] = toupper(uppercase[0]);
+
+                if( currentLine.find(uppercase) != string::npos || currentLine.find(lowerCase) != string::npos ){
                     cout<<currentLine<<endl;
                     getline(file,currentLine);
                     getline(file,currentLine);
@@ -165,9 +180,9 @@ void FileHandler::openFile(void){
     ifstream file;
   	file.open(FILE_NAME);
   	if(!file.is_open())
-  		cout<<"File corrupted.";
+  		cout<<"File corrupted or not found.";
   	else
-  		system("cat Passwords.txt");
+  		system("cat /home/felipe/Passwords/PasswordManagerFiles/Passwords.txt");
   	file.close();
 }
 
@@ -206,8 +221,7 @@ void FileHandler::call(void) {
     system("clear");
 }
 
-int main(int argc, char const *argv[])
-{
+int main(int argc, char const *argv[]){
     FileHandler handler;
     handler.call();
     return EXIT_SUCCESS;
