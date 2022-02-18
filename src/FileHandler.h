@@ -11,8 +11,11 @@ class FileHandler {
         void call(void);
         void author(void);
         void openFile(void);
+        void cleanString(string & pricipal, const string & elementToErase);
+        void getAllTitlesOnGedit();
+        void getAllTitlesOnConsole();
         bool searchPatterns(void);
-        void getAllPasswords(void);
+        void getCompleteInformations(void);
         int createNewPassword(void);
         string stringValidation(void);
 };

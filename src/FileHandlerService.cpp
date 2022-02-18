@@ -23,6 +23,53 @@ using namespace std;
 const string FILE_NAME = "/home/felipe/Passwords/PasswordManagerFiles/Passwords.txt";
 const int MAX_SIZE = 255;
 
+
+void FileHandler::cleanString(string & pricipal, const string & elementToErase){
+    size_t pos = pricipal.find(elementToErase);
+    if (pos != std::string::npos)
+        pricipal.erase(pos, elementToErase.length());
+}
+
+void FileHandler::getAllTitlesOnGedit(){
+  	system("gedit /home/felipe/Passwords/PasswordManagerFiles/Passwords.txt");
+}
+
+void FileHandler::getAllTitlesOnConsole(){
+    system("clear");
+  	ifstream fileToOpen;
+  	string line;
+  	fileToOpen.open(FILE_NAME);
+    int qtd = 0;
+	if(!fileToOpen.is_open())
+  	    cout<<"File corrupted.";
+	else{
+		system("clear");
+        cout<<"--------------------------------------------------"<<endl;	
+	    cout<<" All Titles "<<endl;
+	    cout<<"--------------------------------------------------"<<endl;
+		while(!fileToOpen.eof()){
+  			getline(fileToOpen,line);
+            if( line.find("Title: ") != string::npos ){
+                cleanString(line, "Title: ");
+  			    cout << " " << qtd + 1 << " - "<< line << endl;
+                qtd++;
+            }
+		}
+
+        if(qtd == 0)
+            cout << "NO LINES FOUND." << endl;
+        
+        if(qtd > 0){
+            cout<<"--------------------------------------------------"<<endl;
+            cout <<" Number of elements: " << qtd << endl;
+            cout<<"--------------------------------------------------"<<endl;
+        }
+
+	}
+  	fileToOpen.close();
+    getchar();
+}
+
 bool FileHandler::searchPatterns(void){
 	system("clear");
 	string currentLine;
@@ -31,7 +78,7 @@ bool FileHandler::searchPatterns(void){
     char wordToSearch[MAX_SIZE];
     bool found = false;
 	cout<<"--------------------------------------------------"<<endl;	
-	cout<<"Search in Title"<<endl;
+	cout<<" Search in Title"<<endl;
 	cout<<"--------------------------------------------------"<<endl;
 	cin.getline(wordToSearch,MAX_SIZE);
 	cout<<"--------------------------------------------------"<<endl;
@@ -39,9 +86,9 @@ bool FileHandler::searchPatterns(void){
     cout<<endl;
     cout<<endl;
 	file.open(FILE_NAME);
-    if(!file.is_open()){
-        cout<<"ERROR TO OPEN THE FILE. IT CAN BE CORRUPTED OR IT DOESN'T EXISTIS!";
-    }else{
+    if(!file.is_open())
+        cout<<" ERROR TO OPEN THE FILE. IT CAN BE CORRUPTED OR IT DOESN'T EXISTIS! ";
+    else{
         cout<<"--------------------------------------------------"<<endl;	
 		cout<<"Result"<<endl;
 		cout<<"--------------------------------------------------"<<endl;
@@ -66,15 +113,14 @@ bool FileHandler::searchPatterns(void){
                     getline(file,currentLine);
                     cout<<currentLine<<endl;
                     getline(file,currentLine);
-                    cout<<currentLine<<endl;                                        
+                    cout<<currentLine<<endl<<endl;                                        
                     found = true;
                 }
             }
         }
 
-        if (!found){
-            cout<<"Password not found!"<<endl;
-        }
+        if (!found)
+            cout<<" Password not found! "<<endl;
     }
   	file.close();
     getchar();
@@ -84,10 +130,10 @@ bool FileHandler::searchPatterns(void){
 void FileHandler::author(void){
     system("clear");
     cout<<"------------------------------------------------------------"<<endl;
-    cout<<"About"<<endl;
+    cout<<" About "<<endl;
     cout<<"------------------------------------------------------------"<<endl;                
-    cout<<"Powered by Felipe Mota"<<endl;
-    cout<<"email: felipevieiramota@gmail.com"<<endl;
+    cout<<" Powered by Felipe Mota "<<endl;
+    cout<<" E-mail: felipevieiramota@gmail.com "<<endl;
     cout<<"------------------------------------------------------------"<<endl;
     getchar();
     system("clear");
@@ -107,18 +153,18 @@ string FileHandler::stringValidation(void){
 	return result;
 }
 
-void FileHandler::getAllPasswords(void) {
+void FileHandler::getCompleteInformations(void) {
     system("clear");
   	ifstream fileToOpen;
   	string line;
   	fileToOpen.open(FILE_NAME);
-	if(!fileToOpen.is_open()){
-  	    cout<<"File corrupted.";
-	}else{
+	if(!fileToOpen.is_open())
+  	    cout<<" File corrupted. ";
+	else{
 		system("clear");
 		while(!fileToOpen.eof()){
   			getline(fileToOpen,line);
-  			cout << line <<endl;
+  			cout << " " << line <<endl;
 		}
 	}
   	fileToOpen.close();
@@ -162,11 +208,11 @@ int FileHandler::createNewPassword(void){
 		outPutFile<<endl;
 		outPutFile<<endl;
         outPutFile<<"########################################"<<endl;
-        outPutFile<<"Title: "<<title<<endl;
+        outPutFile<<" Title: "<<title<<endl;
         outPutFile<<"########################################"<<endl;
-        outPutFile<<"User: "<<username<<endl;
-        outPutFile<<"Password: "<<password<<endl;
-        outPutFile<<"Details: "<<details<<endl;
+        outPutFile<<" User: "<<username<<endl;
+        outPutFile<<" Password: "<<password<<endl;
+        outPutFile<<" Details: "<<details<<endl;
         outPutFile<<"########################################"<<endl;
         outPutFile<<endl;
 		outPutFile<<endl;
@@ -193,16 +239,16 @@ void FileHandler::call(void) {
         do{
             system("clear");
             cout<<endl;
-            cout<<"------------------------------------------------------------"<<endl;
-            cout<<" Password Handler [A]bout "                                  <<endl;
-            cout<<"------------------------------------------------------------"<<endl;
-            cout<<" [1] - Save new passoword 			         			   "<<endl;
-            cout<<" [2] - Get all passwords 			         			   "<<endl;
-            cout<<" [3] - Search patterns 			         			       "<<endl;
-            cout<<" [0] - Exit      			         			           "<<endl;
-            cout<<"------------------------------------------------------------"<<endl;
-            cout<<"*****************  Powered by Felipe Mota  *****************"<<endl;
-            cout<<"------------------------------------------------------------"<<endl<<endl;
+            cout<<"-------------------------------------------------------------------------"<<endl;
+            cout<<" Password Handler [A]bout "                                               <<endl;
+            cout<<"-------------------------------------------------------------------------"<<endl;
+            cout<<" [1] - Save new passoword. 			         			                "<<endl;
+            cout<<" [2] - Display all passwords with complete informations on Console.      "<<endl;
+            cout<<" [3] - Search passwords by expecific Titles. 			         		"<<endl;
+            cout<<" [4] - List all Titles. 		                                            "<<endl;
+            cout<<" [5] - Display all passwords with complete informations on Text Editor.  "<<endl;            
+            cout<<" [0] - Exit.      			         			                        "<<endl;
+            cout<<"-------------------------------------------------------------------------"<<endl<<endl;
             __fpurge(stdin);
 			cout<<" Option : ";op = getchar();
             __fpurge(stdin);
@@ -211,8 +257,10 @@ void FileHandler::call(void) {
 		cout<<endl;
 		switch(op){
 			case '1':{ createNewPassword(); } break;
-			case '2':{ getAllPasswords(); } break;
+			case '2':{ getCompleteInformations(); } break;
 			case '3':{ searchPatterns(); } break;
+            case '4':{ getAllTitlesOnConsole(); } break;
+            case '5':{ getAllTitlesOnGedit(); } break;
             case 'A':{ author(); } break;
             case 'a':{ author(); } break;
 		}
